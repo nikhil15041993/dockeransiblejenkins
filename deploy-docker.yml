@@ -2,26 +2,34 @@
 - hosts: dev
   become: True
   tasks:
-    - name: Install python pip
-      yum:
-        name: python-pip
-        state: present
-    - name: Install docker
-      yum:
-        name: docker
-        state: present
-    - name: start docker
-      service:
-        name: docker
-        state: started
-        enabled: yes
-    - name: Install docker-py python module
+   - name: Install prerequisites
+       apt: name=aptitude update_cache=yes state=latest force_apt_get=yes
+
+    - name: instal requir packages.
+      apt: name={{ item }} update_cache=yes state=latest
+      loop: [ 'apt-transport-https', 'ca-certificates', 'curl', 'software-properties-common', 'python3-pip', 'virtualenv', 'python3-setuptools']
+
+    - name: add gpt key
+      apt_key:
+         url: https://download.docker.com/linux/ubuntu/gpg
+         state: present
+
+    - name: add docker repository to apt
+      apt_repository:
+         repo: deb https://download.docker.com/linux/ubuntu bionic stable
+         state: present
+
+    - name: install docker
+      apt: name={{ item }} update_cache=yes state=latest
+      loop: [ docker-ce, docker-ce-cli, containerd.io ]
+     
+    - name: Install Docker Module for Python
       pip:
-        name: docker-py
-        state: present
+         name: docker 
+     
     - name: Start the container
       docker_container:
-        name: hariapp
+        name: nikhil
         image: "nikhilnambiars/tomcat:{{DOCKER_TAG}}"
         state: started
         published_ports:
