@@ -30,7 +30,7 @@
      - name: Start the container
        docker_container:
          name: nikhil
-         image: "nikhilnambiars/tomcat:{{DOCKER_TAG}}"
+         image: "nikhilnambiars/tomcat:01"
          state: started
          published_ports:
             - 8081:8080
