@@ -20,7 +20,7 @@ pipeline{
             }
         }
         
-        stage('Docker Build'){
+        stage('Docker Buildd'){
             steps{
                 sh "docker build . -t kammana/hariapp:${DOCKER_TAG} "
             }
