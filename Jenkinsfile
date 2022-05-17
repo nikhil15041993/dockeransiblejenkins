@@ -7,7 +7,7 @@ pipeline{
       DOCKER_TAG = getVersion()
     }
     stages{
-        stage('SCM'){
+        stage('SCCM'){
             steps{
                 git credentialsId: 'github', 
                     url: 'https://github.com/javahometech/dockeransiblejenkins'
